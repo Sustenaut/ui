@@ -16,3 +16,5 @@ export type { PresenceGroup } from "./components/Presence";
 export { ChoiceField, Form, TextField } from "./form/bindings";
 export { DataTable, Disclosure, LinkList, PageHeading, TagLink } from "./components/Content";
 export type { Column, LinkItem } from "./components/Content";
+export { LocaleMenu } from "./components/LocaleMenu";
+export type { LocaleOption } from "./components/LocaleMenu";

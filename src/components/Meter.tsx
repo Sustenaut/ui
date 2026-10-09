@@ -10,6 +10,8 @@ export function Meter({
   adding = 0,
   unit = "",
   note,
+  format,
+  text = { of: "of", over: (amount: string) => `${amount} over` },
 }: {
   label: ReactNode;
   used: number;
@@ -17,18 +19,22 @@ export function Meter({
   adding?: number;
   unit?: string;
   note?: ReactNode;
+  /** How amounts are written, e.g. with the reader's number format; the default adds `unit`. */
+  format?: (n: number) => string;
+  /** The words around the amounts, for translation. */
+  text?: { of: string; over: (amount: string) => string };
 }) {
   const after = used + adding;
   const over = total > 0 ? after > total : after > 0;
   const scale = Math.max(total, after, 1);
   const pct = (n: number) => `${(100 * n) / scale}%`;
-  const fmt = (n: number) => `${Number.isInteger(n) ? n : n.toFixed(1)}${unit ? ` ${unit}` : ""}`;
+  const fmt = format ?? ((n: number) => `${Number.isInteger(n) ? n : n.toFixed(1)}${unit ? ` ${unit}` : ""}`);
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex justify-between gap-4">
         <span className="font-bold">{label}</span>
         <span className="tabular-nums">
-          {adding ? `${fmt(used)} → ${fmt(after)}` : fmt(used)} of {fmt(total)}
+          {adding ? `${fmt(used)} → ${fmt(after)}` : fmt(used)} {text.of} {fmt(total)}
         </span>
       </div>
       <div
@@ -44,7 +50,7 @@ export function Meter({
       </div>
       {(note || over) && (
         <span className={cn("text-xs", over ? "font-bold text-warn" : "text-muted")}>
-          {note ?? `${fmt(after - total)} over`}
+          {note ?? text.over(fmt(after - total))}
         </span>
       )}
     </div>

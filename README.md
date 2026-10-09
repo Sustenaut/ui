@@ -44,12 +44,26 @@ https://plan.sustenaut.eu/components, or locally after `make planning`.
 | `Tag` | A short label or state |
 | `FormSection`, `Field` | A group of inputs with a heading; one labelled input with its hint and error |
 | `ChoiceGroup` | Pick one of a few options shown as large buttons (a radio group), e.g. hours or a vote |
+| `LocaleMenu` | Choose the page's language: the current flag opens a list of flags with each language's own name |
 | `Distribution` | How many picked each option, as a small bar chart |
 | `PageHeading` | A page's title, introduction and actions |
 | `LinkList`, `TagLink` | A list of links, one per row; a small link styled as a tag |
 | `DataTable` | Rows of cells by column, scrolling sideways on a phone |
 | `Disclosure` | Content that opens under a one-line summary |
 | `Form`, `TextField`, `ChoiceField` | Bindings for [react-hook-form](https://react-hook-form.com/): a form, a text input or area, and a `ChoiceGroup` wired to its fields, showing their errors |
+
+## Text and languages
+
+The library contains no words of its own that a reader sees. Fixed words
+are props with English defaults, which the page translates:
+- `Meter`'s `text` and `format`;
+- `Stepper`'s and `Presence`'s `label`;
+- `Panel`'s `newTabLabel`;
+- `ExternalIcon`'s `label`.
+
+`LocaleMenu` is the language switcher. It takes the languages (code, own
+name, flag image) and reports a choice; the app does the switching
+(react-i18next).
 
 ## Forms and validation
 

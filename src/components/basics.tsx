@@ -89,6 +89,7 @@ export function Panel({
   as: Element = "section",
   className,
   children,
+  newTabLabel,
 }: {
   eyebrow?: ReactNode;
   title?: ReactNode;
@@ -98,6 +99,8 @@ export function Panel({
   as?: "section" | "div" | "aside" | "article";
   className?: string;
   children?: ReactNode;
+  /** Read out after a title link, for translation. */
+  newTabLabel?: string;
 }) {
   return (
     <Element
@@ -118,7 +121,7 @@ export function Panel({
           {href ? (
             <a href={href} target="_blank" rel="noopener" className="text-inherit decoration-accent underline-offset-4">
               {title}
-              <ExternalIcon />
+              <ExternalIcon label={newTabLabel} />
             </a>
           ) : (
             title
@@ -130,9 +133,9 @@ export function Panel({
   );
 }
 
-export function ExternalIcon() {
+export function ExternalIcon({ label = "opens in a new tab" }: { label?: string }) {
   return (
-    <svg className="ml-2 inline size-4 align-[-2px]" viewBox="0 0 16 16" aria-label="opens in a new tab" role="img">
+    <svg className="ml-2 inline size-4 align-[-2px]" viewBox="0 0 16 16" aria-label={label} role="img">
       <path
         d="M9 3 H13 V7 M13 3 L7 9 M11 9.5 V13 H3 V5 H6.5"
         stroke="currentColor"
