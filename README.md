@@ -14,9 +14,18 @@ https://plan.sustenaut.eu/components, or locally after `make planning`.
 - **Generic names.** Components are named for what they are, not for the
   business. For example, `Meter` shows an amount out of a total; it is not
   called a "capacity bar". The business words come in through props.
-- **One look.** Colours, type and spacing are the tokens at the top of
-  `src/styles.css`, taken from `brand/palette.json`. They have light and
-  dark variants. Classes start with `su-`.
+- **Tailwind, utilities first.** Components are styled with Tailwind
+  utility classes in the markup (no `@apply`, no separate stylesheets).
+  Variations are props (`variant`, `tone`, `size`), not extra classes.
+  Classes are composed with `cn()` (clsx and tailwind-merge), so a
+  `className` prop can adjust a component. Prettier's Tailwind plugin
+  keeps classes in a consistent order: run `npm run format` at the root.
+  This follows the Tailgrids best-practices article.
+- **One look.** The design tokens are a Tailwind `@theme` in
+  `src/theme.css`, taken from `brand/palette.json`: colours such as
+  `bg-surface`, `text-muted`, `border-rule` and `bg-primary`, the fonts and
+  the radii. Dark mode reuses the same token names, so components need no
+  `dark:` variants.
 - **Accessible.** Components use real buttons, labels, fieldsets, radio
   groups and `aria-*` attributes. They work with the keyboard and keep a
   44 px touch target.
@@ -36,6 +45,10 @@ https://plan.sustenaut.eu/components, or locally after `make planning`.
 | `FormSection`, `Field` | A group of inputs with a heading; one labelled input with its hint and error |
 | `ChoiceGroup` | Pick one of a few options shown as large buttons (a radio group), e.g. hours or a vote |
 | `Distribution` | How many picked each option, as a small bar chart |
+| `PageHeading` | A page's title, introduction and actions |
+| `LinkList`, `TagLink` | A list of links, one per row; a small link styled as a tag |
+| `DataTable` | Rows of cells by column, scrolling sideways on a phone |
+| `Disclosure` | Content that opens under a one-line summary |
 | `Form`, `TextField`, `ChoiceField` | Bindings for [react-hook-form](https://react-hook-form.com/): a form, a text input or area, and a `ChoiceGroup` wired to its fields, showing their errors |
 
 ## Forms and validation
@@ -60,8 +73,13 @@ event sent to the machine, which decides what happens next.
 
 ## Using it
 
+```css
+/* the app's CSS entry */
+@import "tailwindcss";
+@import "@sustenaut/ui/theme.css";   /* the tokens; also tells Tailwind to scan the library */
+```
+
 ```tsx
-import "@sustenaut/ui/styles.css";            // once, at the app's root
 import { Panel, Meter } from "@sustenaut/ui";
 ```
 
