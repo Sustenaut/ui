@@ -36,6 +36,27 @@ https://plan.sustenaut.eu/components, or locally after `make planning`.
 | `FormSection`, `Field` | A group of inputs with a heading; one labelled input with its hint and error |
 | `ChoiceGroup` | Pick one of a few options shown as large buttons (a radio group), e.g. hours or a vote |
 | `Distribution` | How many picked each option, as a small bar chart |
+| `Form`, `TextField`, `ChoiceField` | Bindings for [react-hook-form](https://react-hook-form.com/): a form, a text input or area, and a `ChoiceGroup` wired to its fields, showing their errors |
+
+## Forms and validation
+
+Forms use react-hook-form. The page owns the form: it calls `useForm`, sets
+the default values and passes each field's rules (`required`, `pattern`,
+`validate`). These are the business rules, so they don't belong in the
+library. The bindings only connect fields to the form and show its errors:
+
+```tsx
+const form = useForm<{ id: string }>({ defaultValues: { id: "" } });
+<Form form={form} onValid={({ id }) => send({ type: "SAVE", id })}>
+  <TextField name="id" label="Calendar ID" rules={{ required: "Paste the calendar's ID." }} />
+  <Button type="submit" variant="primary">Save</Button>
+</Form>
+```
+
+There are two kinds of rule. Field rules (is this value filled in and well
+formed?) belong to react-hook-form. Process rules (may this person do this
+now?) belong to the page's state machine. A valid submit becomes a single
+event sent to the machine, which decides what happens next.
 
 ## Using it
 

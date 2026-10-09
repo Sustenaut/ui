@@ -10,3 +10,5 @@ export type { Choice } from "./components/Form";
 export { Distribution } from "./components/Distribution";
 export { Presence } from "./components/Presence";
 export type { PresenceGroup } from "./components/Presence";
+// react-hook-form bindings: the page owns useForm and its rules; these connect fields and show errors.
+export { ChoiceField, Form, TextField } from "./form/bindings";

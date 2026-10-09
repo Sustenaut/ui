@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Sustenaut's React components: presentation only, no data fetching or business rules.",
+  "description": "Sustenaut's React components: presentation only, no data fetching or business rules; form bindings for react-hook-form.",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "exports": {
@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit -p ."
   },
   "peerDependencies": {
-    "react": "^19.1.0"
+    "react": "^19.1.0",
+    "react-hook-form": "^7.89.0"
   },
   "devDependencies": {
     "@types/react": "^19.1.0",
