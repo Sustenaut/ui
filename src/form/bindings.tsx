@@ -8,6 +8,7 @@ import {
   FormProvider,
   get,
   useFormContext,
+  type FieldError as RhfFieldError,
   type FieldValues,
   type RegisterOptions,
   type SubmitHandler,
@@ -41,7 +42,7 @@ function useError(name: string): string | undefined {
   const {
     formState: { errors },
   } = useFormContext();
-  return get(errors, name)?.message as string | undefined;
+  return (get(errors, name) as RhfFieldError | undefined)?.message;
 }
 
 /** A text input or text area bound to a form field. */

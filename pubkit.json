@@ -1,0 +1,12 @@
+{
+  "kind": "utility",
+  "ci": {
+    "release": false
+  },
+  "protect": {
+    "checks": [
+      "ci / passed"
+    ],
+    "tags": false
+  }
+}

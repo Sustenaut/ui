@@ -1,4 +1,4 @@
-/* @sustenaut/ui design tokens (brand/palette.json) for Tailwind v4. An app imports this after
+/* @sustenaut/ui design tokens (business-plan's brand/palette.json) for Tailwind v4. An app imports this after
    Tailwind:  @import "tailwindcss";  @import "@sustenaut/ui/theme.css";
    Utilities then read the tokens: bg-surface, text-muted, border-rule, bg-primary, … */
 
