@@ -1,0 +1,3 @@
+/* What Prettier's Tailwind plugin orders classes by: Tailwind and this library's tokens, as an app imports them. */
+@import "tailwindcss";
+@import "../src/theme.css";

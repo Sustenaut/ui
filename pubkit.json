@@ -1,0 +1,10 @@
+{
+  "kind": "utility",
+  "ci": {},
+  "protect": {
+    "checks": [
+      "ci / passed"
+    ],
+    "tags": false
+  }
+}

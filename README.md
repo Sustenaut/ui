@@ -1,8 +1,8 @@
 # @sustenaut/ui
 
-Sustenaut's React component library. The planning app (`planning/web`) uses
+Sustenaut's React component library. The planning app (business-plan's `planning/web`) uses
 it, and later pages and apps can too. You can see every component at
-https://plan.sustenaut.eu/components, or locally after `make planning`.
+https://plan.sustenaut.eu/components, or locally after `make planning` in business-plan.
 
 ## Rules
 
@@ -22,7 +22,7 @@ https://plan.sustenaut.eu/components, or locally after `make planning`.
   keeps classes in a consistent order: run `npm run format` at the root.
   This follows the Tailgrids best-practices article.
 - **One look.** The design tokens are a Tailwind `@theme` in
-  `src/theme.css`, taken from `brand/palette.json`: colours such as
+  `src/theme.css`, taken from business-plan's `brand/palette.json`: colours such as
   `bg-surface`, `text-muted`, `border-rule` and `bg-primary`, the fonts and
   the radii. Dark mode reuses the same token names, so components need no
   `dark:` variants.
@@ -97,7 +97,10 @@ event sent to the machine, which decides what happens next.
 import { Panel, Meter } from "@sustenaut/ui";
 ```
 
-The repository root is an npm workspace containing `ui` and
-`planning/web`. Run `npm ci` there once. Then:
-- `npm run typecheck -w ui` checks the library;
-- `npm run build -w planning/web` builds the app.
+An app depends on a release of this repository, `"@sustenaut/ui":
+"github:Sustenaut/ui#vX.Y.Z"`, so no registry account is involved; it builds the
+TypeScript and the CSS itself. A release is a tag on main with the version in
+`package.json`.
+
+Run `npm ci` here once. Then `npm test` typechecks the library and checks the
+formatting, and `npm run format` fixes it.
