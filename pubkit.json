@@ -1,6 +1,8 @@
 {
   "kind": "utility",
-  "ci": {},
+  "ci": {
+    "release": false
+  },
   "protect": {
     "checks": [
       "ci / passed"
