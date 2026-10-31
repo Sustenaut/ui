@@ -1,0 +1,11 @@
+{
+  "uses": [
+    {
+      "plugin": "sonarcloud.scan",
+      "paths": [
+        ".github/workflows/main.yml",
+        ".github/workflows/pr.yml"
+      ]
+    }
+  ]
+}
