@@ -9,5 +9,10 @@
       "integrations / scan"
     ],
     "tags": false
+  },
+  "security": {
+    "sonar": {
+      "args": "-Dsonar.sources=src -Dsonar.tests=tests"
+    }
   }
 }

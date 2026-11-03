@@ -44,6 +44,14 @@ https://plan.sustenaut.eu/components, or locally after `make planning` in busine
 | `Tag` | A short label or state |
 | `FormSection`, `Field` | A group of inputs with a heading; one labelled input with its hint and error |
 | `ChoiceGroup` | Pick one of a few options shown as large buttons (a radio group), e.g. hours or a vote |
+| `FieldGroup` | A labelled group of inputs (a fieldset) with its hint and error |
+| `NumberField` | One labelled number; empty reports `undefined` |
+| `RangeField` | A number between a minimum and a maximum: a slider and a number input |
+| `DateRangeField` | A start and an end date side by side, stacked on a phone |
+| `MultiChoiceField` | Pick any number of a few options shown as large buttons (checkboxes) |
+| `CheckboxField` | A yes-or-no answer |
+| `TableField`, `CellInput` | Editable rows of typed cells (text, number, whole number, date, yes/no, choice), adding and removing rows; one cell's input |
+| `Tabs` | Content in tabs, one panel at a time, moved between with the arrow keys |
 | `LocaleMenu` | Choose the page's language: the current flag opens a list of flags with each language's own name |
 | `Distribution` | How many picked each option, as a small bar chart |
 | `PageHeading` | A page's title, introduction and actions |
@@ -59,7 +67,9 @@ are props with English defaults, which the page translates:
 - `Meter`'s `text` and `format`;
 - `Stepper`'s and `Presence`'s `label`;
 - `Panel`'s `newTabLabel`;
-- `ExternalIcon`'s `label`.
+- `ExternalIcon`'s `label`;
+- `DateRangeField`'s `startLabel` and `endLabel`;
+- `TableField`'s `addLabel` and `removeLabel`.
 
 `LocaleMenu` is the language switcher. It takes the languages (code, own
 name, flag image) and reports a choice; the app does the switching
@@ -85,6 +95,42 @@ formed?) belong to react-hook-form. Process rules (may this person do this
 now?) belong to the page's state machine. A valid submit becomes a single
 event sent to the machine, which decides what happens next.
 
+## JSON Forms
+
+`@sustenaut/ui/jsonforms` draws [JSON Forms](https://jsonforms.io) with these
+components, for forms a schema describes rather than a page's code. The page
+owns the JSON schema (the data and its rules), the UI schema (the layout) and
+the data; the renderers only draw them and report changes:
+
+```tsx
+import { SchemaForm } from "@sustenaut/ui/jsonforms";
+<SchemaForm schema={schema} uischema={uischema} data={data} onChange={({ data, errors }) => setDraft(data)} />
+```
+
+`SchemaForm` is JSON Forms' `JsonForms` with the library's `renderers` and
+`cells` (both exported, so a page can add its own). What each control becomes:
+
+| Schema | Component |
+|---|---|
+| `string` (`options.multi`: a text area; `format: "date"`: a date) | `Field` with an input |
+| `enum` or `oneOf` of consts | `ChoiceGroup` for up to five options or `options.format: "radio"`; a select for more or `options.format: "select"` |
+| `number`, `integer` | `NumberField` |
+| `number`/`integer` with `minimum`, `maximum` and `options.slider: true` | `RangeField` |
+| `object` whose `start` and `end` are `format: "date"` | `DateRangeField` (titles, or `options.startLabel`/`endLabel`) |
+| `array` of `uniqueItems`, items an `enum` or `oneOf` | `MultiChoiceField` |
+| `array` of objects | `TableField`, its cells drawn by the cell set (`options.columns` orders them) |
+| `boolean` | `CheckboxField` |
+
+The layouts are JSON Forms' own ([UI schema layouts](https://jsonforms.io/docs/uischema/layouts)):
+`VerticalLayout`; `HorizontalLayout`, stacked on a phone; `Group`, a
+`FormSection`; `Categorization`, `Tabs` (a category a rule hides has no tab);
+and `Label`. Rules hide, show and disable as JSON Forms defines. A label,
+description (shown as the hint) and error come from the schemas and from JSON
+Forms' `i18n` prop, which also translates the validation messages; anything
+no renderer knows draws nothing. `exampleSchema`, `exampleUiSchema` and
+`exampleData` are a sample form using every renderer, for the tests and a
+components page.
+
 ## Using it
 
 ```css
@@ -102,5 +148,6 @@ An app depends on a release of this repository, `"@sustenaut/ui":
 TypeScript and the CSS itself. A release is a tag on main with the version in
 `package.json`.
 
-Run `npm ci` here once. Then `npm test` typechecks the library and checks the
-formatting, and `npm run format` fixes it.
+Run `npm ci` here once. Then `npm test` typechecks the library, checks the
+formatting and runs the unit tests (Vitest in jsdom, `tests/*.test.tsx`), whose
+coverage goes to `coverage/lcov.info`; `npm run format` fixes the formatting.

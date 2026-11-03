@@ -54,7 +54,7 @@ export function Field({
 
 export function FieldError({ id, children }: { id?: string; children: ReactNode }) {
   return (
-    <span id={id} role="alert" className="text-sm font-bold text-bad">
+    <span id={id} role="alert" className="text-sm font-bold whitespace-pre-line text-bad">
       {children}
     </span>
   );
