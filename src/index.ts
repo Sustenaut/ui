@@ -9,6 +9,19 @@ export type { Step } from "./components/Stepper";
 export { Meter } from "./components/Meter";
 export { ChoiceGroup, Field, FieldError, FormSection, inputClass } from "./components/Form";
 export type { Choice } from "./components/Form";
+export {
+  CheckboxField,
+  DateRangeField,
+  FieldGroup,
+  MultiChoiceField,
+  NumberField,
+  RangeField,
+} from "./components/Inputs";
+export type { DateRange } from "./components/Inputs";
+export { CellInput, TableField } from "./components/TableField";
+export type { CellChoice, CellType, TableFieldColumn, TableRow } from "./components/TableField";
+export { Tabs } from "./components/Tabs";
+export type { Tab } from "./components/Tabs";
 export { Distribution } from "./components/Distribution";
 export { Presence } from "./components/Presence";
 export type { PresenceGroup } from "./components/Presence";

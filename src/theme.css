@@ -4,6 +4,7 @@
 
 @source "./components";
 @source "./form";
+@source "./jsonforms";
 
 @theme {
   --color-ground: #f3efe2; /* cream */
