@@ -143,6 +143,27 @@ components page.
 import { Panel, Meter } from "@sustenaut/ui";
 ```
 
+### Without React or Tailwind
+
+A page with no Tailwind build (server templates, Alpine.js, plain HTML) takes
+the same tokens from `src/tokens.css`: plain CSS custom properties with the
+names and values `theme.css` gives Tailwind (`--color-surface`,
+`--color-muted`, `--font-sans`, `--radius-control`, …), dark mode included. A
+unit test fails if the two files differ. A site without a build loads it from
+jsDelivr at a release tag, with its integrity:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Sustenaut/ui@vX.Y.Z/src/tokens.css"
+      integrity="sha384-…" crossorigin="anonymous">
+```
+
+The fonts are Fontsource's variable builds of Nunito and Nunito Sans
+(`@fontsource-variable/nunito` and `@fontsource-variable/nunito-sans`), which
+the page loads itself so it can pin them too. Both files name those families
+first.
+
+### Releases
+
 An app depends on a release of this repository, `"@sustenaut/ui":
 "github:Sustenaut/ui#vX.Y.Z"`, so no registry account is involved; it builds the
 TypeScript and the CSS itself. A release is a tag on main with the version in
