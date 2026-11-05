@@ -21,11 +21,12 @@ https://plan.sustenaut.eu/components, or locally after `make planning` in busine
   `className` prop can adjust a component. Prettier's Tailwind plugin
   keeps classes in a consistent order: run `npm run format` at the root.
   This follows the Tailgrids best-practices article.
-- **One look.** The design tokens are a Tailwind `@theme` in
-  `src/theme.css`, taken from business-plan's `brand/palette.json`: colours such as
-  `bg-surface`, `text-muted`, `border-rule` and `bg-primary`, the fonts and
-  the radii. Dark mode reuses the same token names, so components need no
-  `dark:` variants.
+- **One look.** The design tokens come from
+  [`@sustenaut/theme`](https://github.com/Sustenaut/theme), the one copy every
+  Sustenaut site uses, which `src/theme.css` imports: colours such as
+  `bg-surface`, `text-muted`, `border-rule` and `bg-primary`, the fonts, the
+  radii and the panel shadow. Dark mode reuses the same token names, so
+  components need no `dark:` variants.
 - **Accessible.** Components use real buttons, labels, fieldsets, radio
   groups and `aria-*` attributes. They work with the keyboard and keep a
   44 px touch target.
@@ -136,8 +137,12 @@ components page.
 ```css
 /* the app's CSS entry */
 @import "tailwindcss";
-@import "@sustenaut/ui/theme.css";   /* the tokens; also tells Tailwind to scan the library */
+@import "@sustenaut/ui/theme.css";      /* the tokens; also tells Tailwind to scan the library */
+@import "@sustenaut/theme/fonts.css";   /* Nunito and Nunito Sans, which the tokens name */
 ```
+
+`fonts.css` loads `fonts/*.woff2` from beside itself: let the bundler rewrite
+the URLs, or copy `node_modules/@sustenaut/theme/fonts/` next to the built CSS.
 
 ```tsx
 import { Panel, Meter } from "@sustenaut/ui";
