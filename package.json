@@ -42,6 +42,7 @@
   "dependencies": {
     "@jsonforms/core": "3.8.0",
     "@jsonforms/react": "3.8.0",
+    "@sustenaut/theme": "github:Sustenaut/theme#v0.1.0",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.7.0"
   },
