@@ -14,5 +14,10 @@
     "sonar": {
       "args": "-Dsonar.sources=src -Dsonar.tests=tests"
     }
+  },
+  "mirror": {
+    "wheels": "https://storage.sustenaut.eu/wheels",
+    "terraform": "https://storage.sustenaut.eu/terraform",
+    "pypi": "https://storage.sustenaut.eu/pypi"
   }
 }
