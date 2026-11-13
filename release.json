@@ -1,0 +1,17 @@
+{
+  "name": "ui",
+  "package": "pkg.ui",
+  "tag": "PKG-SUI-11-2026",
+  "corpus": "corpus",
+  "manifest": {
+    "kind": "npm",
+    "path": "package.json"
+  },
+  "code": [
+    "src/",
+    "package.json",
+    "package-lock.json"
+  ],
+  "install": "npm install github:Sustenaut/ui#{tag}",
+  "key": "pub:sha2-256:tr3cgbtwuwsj5ppkg5lisgzt6qji2ftj7vymyahzi5hjpstfsw5q"
+}

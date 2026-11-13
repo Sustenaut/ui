@@ -156,3 +156,16 @@ TypeScript and the CSS itself. A release is a tag on main with the version in
 Run `npm ci` here once. Then `npm test` typechecks the library, checks the
 formatting and runs the unit tests (Vitest in jsdom, `tests/*.test.tsx`), whose
 coverage goes to `coverage/lcov.info`; `npm run format` fixes the formatting.
+
+## Releasing
+
+With [pubrel](https://github.com/Sustenaut/pubrel), like the other Sustenaut
+packages: every pull request that changes a file `release.json`'s `code` lists
+records the change (`pubrel add added "…"`), and `pubrel prepare`, run in a
+checkout that holds the release key (`corpus/.publet`, gitignored, backed up to
+Bitwarden as `pub-signing-key-ui`), opens the release pull request. Merging it
+tags `vX.Y.Z`. A consumer pins a release: `npm install github:Sustenaut/ui#vX.Y.Z`.
+
+`v0.1.0` was tagged by hand before pubrel, so its first release is 0.1.1.
+`scripts/go-live-pubrel.sh` brings releases up (the key's backup, the release
+app's secrets, and after merging, the rulesets).
