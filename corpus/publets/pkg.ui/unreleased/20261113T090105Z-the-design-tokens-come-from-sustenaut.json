@@ -1,0 +1,4 @@
+{
+  "category": "changed",
+  "change": "The design tokens come from @sustenaut/theme rather than a copy of its theme.css"
+}

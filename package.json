@@ -1,7 +1,7 @@
 {
   "name": "@sustenaut/ui",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Sustenaut's React components: presentation only, no data fetching or business rules; form bindings for react-hook-form and renderers for JSON Forms.",
   "main": "src/index.ts",

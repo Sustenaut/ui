@@ -1,6 +1,22 @@
 {
   "uses": [
     {
+      "plugin": "github.app-token",
+      "paths": [
+        ".github/workflows/main.yml",
+        ".github/workflows/pr.yml",
+        "scripts/go-live-pubrel.sh"
+      ],
+      "mode": "required"
+    },
+    {
+      "plugin": "github.repo-ops",
+      "paths": [
+        "scripts/go-live-pubrel.sh"
+      ],
+      "mode": "required"
+    },
+    {
       "plugin": "sonarcloud.scan",
       "paths": [
         ".github/workflows/main.yml",
