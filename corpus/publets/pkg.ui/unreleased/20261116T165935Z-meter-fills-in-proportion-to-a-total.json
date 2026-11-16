@@ -1,4 +1,0 @@
-{
-  "category": "fixed",
-  "change": "Meter fills in proportion to a total below one (0.2 of 0.5 showed 20%, not 40%)"
-}
