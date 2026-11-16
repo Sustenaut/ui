@@ -8,6 +8,7 @@ import {
   CapabilityMatrix,
   DeviceList,
   LaunchTile,
+  Meter,
   SideNav,
   StepList,
   Tag,
@@ -466,5 +467,27 @@ const draw = (world: World) => {
     const chip = screen.getByText("GitHub").parentElement!;
     expect(screen.getByRole("tooltip", { hidden: true }).id).toBe(chip.getAttribute("aria-describedby"));
     expect(screen.getByRole("tooltip", { hidden: true }).textContent).toContain(text);
+  });
+}
+
+// Meter
+{
+  Given("a meter of 0.2 GB used out of 0.5 GB", (world: World) => {
+    world.element = <Meter label="Storage" used={0.2} total={0.5} unit="GB" />;
+  });
+
+  Given("a meter of 2,300 minutes used out of 2,000", (world: World) => {
+    world.element = <Meter label="Minutes" used={2300} total={2000} unit="minutes" />;
+  });
+
+  When("the meter is drawn", draw);
+
+  Then("the bar is filled to {int}%", (_w, pct: number) => {
+    const bar = screen.getByRole("meter").firstElementChild as HTMLElement;
+    expect(bar.style.width).toBe(`${pct}%`);
+  });
+
+  Then("it reads {string}", (_w, text: string) => {
+    expect(document.body.textContent).toContain(text);
   });
 }

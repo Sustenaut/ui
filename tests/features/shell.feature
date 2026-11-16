@@ -106,3 +106,16 @@ Feature: An app's frame and the dashboard's building blocks
       When the chip is drawn
       Then the chip reads "GitHub" and "kaja-studio" and can take the focus
       And its details "reader app installed" describe it
+
+  Rule: Meter
+
+    Scenario: A meter fills in proportion to its total, even when the total is below one
+      Given a meter of 0.2 GB used out of 0.5 GB
+      When the meter is drawn
+      Then the bar is filled to 40%
+      And it reads "0.2 GB of 0.5 GB"
+
+    Scenario: A meter over its total says by how much
+      Given a meter of 2,300 minutes used out of 2,000
+      When the meter is drawn
+      Then it reads "300 minutes over"
