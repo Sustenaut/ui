@@ -1,0 +1,4 @@
+{
+  "category": "internal",
+  "change": "The tests are Gherkin scenarios, run by quickpickle on vitest; no change to the components"
+}

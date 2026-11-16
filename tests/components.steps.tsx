@@ -1,7 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { expect, vi } from "vitest";
+import { Then } from "quickpickle";
 import {
   CellInput,
   CheckboxField,
@@ -16,8 +17,9 @@ import {
   type TableRow,
 } from "../src";
 
-describe("NumberField", () => {
-  it("reports a number, and undefined when emptied", () => {
+// NumberField
+{
+  Then("NumberField reports a number, and undefined when emptied", () => {
     const onChange = vi.fn();
     render(<NumberField label="Trays" value={4} onChange={onChange} step={1} hint="Whole trays" error="Too many" />);
     const input = screen.getByLabelText("Trays") as HTMLInputElement;
@@ -31,17 +33,18 @@ describe("NumberField", () => {
     expect(onChange).toHaveBeenLastCalledWith(undefined);
   });
 
-  it("takes any decimal without a step", () => {
+  Then("NumberField takes any decimal without a step", () => {
     render(<NumberField label="Grams" value={undefined} onChange={() => {}} />);
     const input = screen.getByLabelText("Grams") as HTMLInputElement;
     expect(input.value).toBe("");
     expect(input.step).toBe("any");
     expect(input.inputMode).toBe("decimal");
   });
-});
+}
 
-describe("RangeField", () => {
-  it("shows one value in a slider and a number input, both labelled", () => {
+// RangeField
+{
+  Then("RangeField shows one value in a slider and a number input, both labelled", () => {
     const onChange = vi.fn();
     render(<RangeField label="Heat" value={20} onChange={onChange} min={10} max={30} hint="°C" error="Too hot" />);
     const slider = screen.getByRole("slider", { name: "Heat" }) as HTMLInputElement;
@@ -57,13 +60,14 @@ describe("RangeField", () => {
     expect(onChange).toHaveBeenLastCalledWith(undefined);
   });
 
-  it("puts an empty value's slider at the minimum", () => {
+  Then("RangeField puts an empty value's slider at the minimum", () => {
     render(<RangeField label="Heat" value={undefined} onChange={() => {}} min={10} max={30} />);
     expect((screen.getByRole("slider") as HTMLInputElement).value).toBe("10");
   });
-});
+}
 
-describe("DateRangeField", () => {
+// DateRangeField
+{
   function Harness({ onChange }: { onChange: (v: DateRange) => void }) {
     const [value, setValue] = useState<DateRange | undefined>(undefined);
     return (
@@ -80,7 +84,7 @@ describe("DateRangeField", () => {
     );
   }
 
-  it("keeps the start before the end, with English labels by default", () => {
+  Then("DateRangeField keeps the start before the end, with English labels by default", () => {
     const onChange = vi.fn();
     render(<Harness onChange={onChange} />);
     expect(screen.getByRole("group", { name: "Window" })).toBeTruthy();
@@ -97,21 +101,22 @@ describe("DateRangeField", () => {
     expect(screen.getByRole("alert").textContent).toBe("Pick both");
   });
 
-  it("takes the page's words for its two inputs", () => {
+  Then("DateRangeField takes the page's words for its two inputs", () => {
     render(<DateRangeField label="Window" value={{}} onChange={() => {}} startLabel="Alates" endLabel="Kuni" />);
     expect(screen.getByLabelText("Alates")).toBeTruthy();
     expect(screen.getByLabelText("Kuni")).toBeTruthy();
   });
-});
+}
 
-describe("MultiChoiceField", () => {
+// MultiChoiceField
+{
   const choices = [
     { value: "sun", label: "Sun" },
     { value: "led", label: "LED", tone: "warning" as const, dashed: true },
     { value: "shade", label: "Shade", disabled: true },
   ];
 
-  it("adds and removes picks, keeping the choices' order", async () => {
+  Then("MultiChoiceField adds and removes picks, keeping the choices' order", async () => {
     const onChange = vi.fn();
     const { rerender } = render(
       <MultiChoiceField label="Light" choices={choices} value={["led"]} onChange={onChange} />,
@@ -127,10 +132,11 @@ describe("MultiChoiceField", () => {
     rerender(<MultiChoiceField label="Light" choices={choices} value={undefined} onChange={onChange} disabled />);
     expect((screen.getByRole("checkbox", { name: "Sun" }) as HTMLButtonElement).disabled).toBe(true);
   });
-});
+}
 
-describe("CheckboxField", () => {
-  it("reports whether it is ticked", async () => {
+// CheckboxField
+{
+  Then("CheckboxField reports whether it is ticked", async () => {
     const onChange = vi.fn();
     render(<CheckboxField label="Organic" value={undefined} onChange={onChange} hint="Certified" error="Required" />);
     const box = screen.getByRole("checkbox", { name: "Organic" }) as HTMLInputElement;
@@ -140,10 +146,11 @@ describe("CheckboxField", () => {
     expect(onChange).toHaveBeenLastCalledWith(true);
     expect(screen.getByText("Certified")).toBeTruthy();
   });
-});
+}
 
-describe("FieldGroup", () => {
-  it("is a fieldset named by its legend and described by its hint", () => {
+// FieldGroup
+{
+  Then("FieldGroup is a fieldset named by its legend and described by its hint", () => {
     render(
       <FieldGroup label="Size" hint="Pick one">
         <span>inside</span>
@@ -152,9 +159,10 @@ describe("FieldGroup", () => {
     const group = screen.getByRole("group", { name: "Size" });
     expect(group.getAttribute("aria-describedby")).toBe(screen.getByText("Pick one").id);
   });
-});
+}
 
-describe("TableField", () => {
+// TableField
+{
   const columns = [
     { key: "day", label: "Day", type: "date" as const },
     { key: "grams", label: "Grams", type: "number" as const, min: 0 },
@@ -182,7 +190,7 @@ describe("TableField", () => {
     );
   }
 
-  it("adds a row, edits each typed cell and removes the row", async () => {
+  Then("TableField adds a row, edits each typed cell and removes the row", async () => {
     const onChange = vi.fn();
     render(<Harness onChange={onChange} />);
     expect(screen.getByRole("table", { name: "Harvests" })).toBeTruthy();
@@ -207,7 +215,7 @@ describe("TableField", () => {
     expect(onChange).toHaveBeenLastCalledWith([]);
   });
 
-  it("draws the page's cells and words, and no rows when it has none", () => {
+  Then("TableField draws the page's cells and words, and no rows when it has none", () => {
     render(
       <TableField
         label="Rows"
@@ -223,7 +231,7 @@ describe("TableField", () => {
     expect(screen.queryAllByRole("row")).toHaveLength(1);
   });
 
-  it("calls renderCell for each cell", () => {
+  Then("TableField calls renderCell for each cell", () => {
     render(
       <TableField
         label="Rows"
@@ -237,10 +245,11 @@ describe("TableField", () => {
     expect(screen.getByText("a0")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Eemalda 1" })).toBeTruthy();
   });
-});
+}
 
-describe("CellInput", () => {
-  it("shows values of the wrong kind as empty", () => {
+// CellInput
+{
+  Then("CellInput shows values of the wrong kind as empty", () => {
     render(
       <>
         <CellInput type="text" value={3} onChange={() => {}} id="t" />
@@ -252,9 +261,10 @@ describe("CellInput", () => {
     expect((document.getElementById("n") as HTMLInputElement).value).toBe("");
     expect(document.getElementById("c")?.getAttribute("aria-invalid")).toBe("true");
   });
-});
+}
 
-describe("Tabs", () => {
+// Tabs
+{
   const tabs = [
     { id: "a", label: "First", content: <p>one</p> },
     { id: "b", label: "Second", content: <p>two</p> },
@@ -266,7 +276,7 @@ describe("Tabs", () => {
     return <Tabs label="Parts" tabs={tabs} value={value} onChange={setValue} />;
   }
 
-  it("shows one panel and moves with the keyboard", async () => {
+  Then("Tabs shows one panel and moves with the keyboard", async () => {
     render(<Harness />);
     expect(screen.getByRole("tablist", { name: "Parts" })).toBeTruthy();
     expect(screen.getByRole("tabpanel", { name: "First" }).textContent).toBe("one");
@@ -290,8 +300,8 @@ describe("Tabs", () => {
     expect(screen.getByRole("tabpanel").textContent).toBe("one");
   });
 
-  it("opens the first tab when the value names none", () => {
+  Then("Tabs opens the first tab when the value names none", () => {
     render(<Tabs tabs={tabs} value="z" onChange={() => {}} />);
     expect(screen.getByRole("tabpanel").textContent).toBe("one");
   });
-});
+}

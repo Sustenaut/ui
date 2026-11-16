@@ -154,7 +154,7 @@ TypeScript and the CSS itself. A release is a tag on main with the version in
 `package.json`.
 
 Run `npm ci` here once. Then `npm test` typechecks the library, checks the
-formatting and runs the unit tests (Vitest in jsdom, `tests/*.test.tsx`), whose
+formatting and runs the scenarios (`tests/features/*.feature`, run by quickpickle on Vitest in jsdom, with their steps in `tests/*.steps.tsx`), whose
 coverage goes to `coverage/lcov.info`; `npm run format` fixes the formatting.
 
 ## Releasing

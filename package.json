@@ -32,6 +32,7 @@
     "jsdom": "^30.1.3",
     "prettier": "^3.9.9",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "quickpickle": "1.11.2",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-hook-form": "^7.91.0",
@@ -49,5 +50,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sustenaut/ui.git"
+  },
+  "overrides": {
+    "uuid": "11.1.1"
   }
 }
