@@ -1,4 +1,7 @@
+// quickpickle's setup for the scenarios: each draws into a fresh document.
 import { cleanup } from "@testing-library/react";
-import { afterEach } from "vitest";
+import { After } from "quickpickle";
 
-afterEach(cleanup);
+After(async () => {
+  cleanup();
+});

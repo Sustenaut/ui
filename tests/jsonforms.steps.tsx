@@ -1,7 +1,8 @@
 import type { JsonSchema7 as JsonSchema, TesterContext, UISchemaElement } from "@jsonforms/core";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { expect, vi } from "vitest";
+import { Then } from "quickpickle";
 import {
   cells,
   exampleData,
@@ -56,8 +57,9 @@ function winner(key: string, schema: JsonSchema, options?: Record<string, unknow
   return ranks.indexOf(Math.max(...ranks));
 }
 
-describe("testers", () => {
-  it("pick a distinct renderer for each kind of value", async () => {
+// testers
+{
+  Then("testers pick a distinct renderer for each kind of value", async () => {
     const picks = {
       string: winner("a", { type: "string" }),
       enum: winner("a", { type: "string", enum: ["x"] }),
@@ -77,21 +79,21 @@ describe("testers", () => {
     expect(new Set(Object.values(picks)).size).toBe(Object.keys(picks).length - 1);
   });
 
-  it("show a slider only with a minimum, a maximum and the slider option", async () => {
+  Then("testers show a slider only with a minimum, a maximum and the slider option", async () => {
     const range = { type: "number", minimum: 0, maximum: 9 } as const;
     expect(rankOf(isSliderControl, "a", range, { slider: true })).toBe(true);
     expect(rankOf(isSliderControl, "a", range)).toBe(false);
     expect(rankOf(isSliderControl, "a", { type: "integer", minimum: 0 }, { slider: true })).toBe(false);
   });
 
-  it("know a date range by its start and end dates", async () => {
+  Then("testers know a date range by its start and end dates", async () => {
     const date = { type: "string", format: "date" } as const;
     expect(rankOf(isDateRangeControl, "a", objectOf({ start: date, end: date }))).toBe(true);
     expect(rankOf(isDateRangeControl, "a", objectOf({ start: date, end: { type: "string" } }))).toBe(false);
     expect(rankOf(isDateRangeControl, "a", { type: "string", format: "date" })).toBe(false);
   });
 
-  it("know several picks by unique items of an enum or of consts", async () => {
+  Then("testers know several picks by unique items of an enum or of consts", async () => {
     const of = (items: JsonSchema, uniqueItems = true) =>
       rankOf(isMultiChoiceControl, "a", { type: "array", uniqueItems, items });
     expect(of({ type: "string", enum: ["x"] })).toBe(true);
@@ -101,7 +103,7 @@ describe("testers", () => {
     expect(of({ type: "string" })).toBe(false);
   });
 
-  it("draw nothing, and no words, for what they do not know", async () => {
+  Then("testers draw nothing, and no words, for what they do not know", async () => {
     const { container } = render(
       <SchemaForm schema={objectOf({ a: { type: "null" } })} uischema={control("a")} data={{}} />,
     );
@@ -109,10 +111,11 @@ describe("testers", () => {
     expect(renderers.at(-1)?.tester(control("a"), {}, { rootSchema: {}, config: {} })).toBe(0);
     expect(cells.at(-1)?.tester(control("a"), {}, { rootSchema: {}, config: {} })).toBe(0);
   });
-});
+}
 
-describe("controls", () => {
-  it("draw a string as a labelled input with its description and errors", async () => {
+// controls
+{
+  Then("controls draw a string as a labelled input with its description and errors", async () => {
     const schema = objectOf({ name: { type: "string", title: "Name", minLength: 3, description: "Who" } });
     const { latest } = draw(schema, control("name"), { name: "ab" });
     const input = screen.getByLabelText("Name") as HTMLInputElement;
@@ -125,7 +128,7 @@ describe("controls", () => {
     expect((await latest()).data).toEqual({});
   });
 
-  it("draw a multi-line string as a text area and a date as a date input", async () => {
+  Then("controls draw a multi-line string as a text area and a date as a date input", async () => {
     const schema = objectOf({ notes: { type: "string" }, day: { type: "string", format: "date" } });
     const ui = {
       type: "VerticalLayout",
@@ -142,7 +145,7 @@ describe("controls", () => {
     expect((await latest()).data).toEqual({ day: "2026-01-02" });
   });
 
-  it("draw a few options as buttons, keeping a number enum's numbers", async () => {
+  Then("controls draw a few options as buttons, keeping a number enum's numbers", async () => {
     const { latest } = draw(objectOf({ size: { type: "integer", enum: [1, 2, 3] } }), control("size"));
     const group = screen.getByRole("radiogroup", { name: "Size" });
     await userEvent.click(within(group).getByRole("radio", { name: "2" }));
@@ -150,7 +153,7 @@ describe("controls", () => {
     expect(within(group).getByRole("radio", { name: "2" }).getAttribute("aria-checked")).toBe("true");
   });
 
-  it("draw many options, or the select format, as a select", async () => {
+  Then("controls draw many options, or the select format, as a select", async () => {
     const options = { oneOf: ["a", "b", "c", "d", "e", "f"].map((v) => ({ const: v, title: v.toUpperCase() })) };
     const { latest } = draw(objectOf({ pick: { type: "string", ...options } }), control("pick"));
     const select = screen.getByRole("combobox", { name: "Pick" });
@@ -161,7 +164,7 @@ describe("controls", () => {
     expect((await latest()).data).toEqual({});
   });
 
-  it("follow the radio and select formats over the count", async () => {
+  Then("controls follow the radio and select formats over the count", async () => {
     const schema = objectOf({
       few: { type: "string", enum: ["a", "b"] },
       many: { type: "string", enum: ["a", "b", "c", "d", "e", "f"] },
@@ -175,7 +178,7 @@ describe("controls", () => {
     expect(screen.getByRole("radiogroup", { name: "Many" })).toBeTruthy();
   });
 
-  it("draw numbers, whole numbers stepping by one", async () => {
+  Then("controls draw numbers, whole numbers stepping by one", async () => {
     const schema = objectOf({ grams: { type: "number", minimum: 0 }, trays: { type: "integer" } });
     const ui = { type: "VerticalLayout", elements: [control("grams"), control("trays")] } as UISchemaElement;
     const { latest } = draw(schema, ui, { grams: 5 });
@@ -188,7 +191,7 @@ describe("controls", () => {
     expect(screen.getByRole("alert").textContent).toContain("0");
   });
 
-  it("draw a bounded number with the slider option as a slider", async () => {
+  Then("controls draw a bounded number with the slider option as a slider", async () => {
     const schema = objectOf({ heat: { type: "number", minimum: 10, maximum: 30, multipleOf: 0.5 } });
     const { latest } = draw(schema, control("heat", { slider: true }), { heat: 20 });
     const slider = screen.getByRole("slider", { name: "Heat" }) as HTMLInputElement;
@@ -197,13 +200,13 @@ describe("controls", () => {
     expect((await latest()).data).toEqual({ heat: 25 });
   });
 
-  it("draw a boolean as a checkbox", async () => {
+  Then("controls draw a boolean as a checkbox", async () => {
     const { latest } = draw(objectOf({ organic: { type: "boolean" } }), control("organic"));
     await userEvent.click(screen.getByRole("checkbox", { name: "Organic" }));
     expect((await latest()).data).toEqual({ organic: true });
   });
 
-  it("draw a date range with its dates' titles, removing it when emptied", async () => {
+  Then("controls draw a date range with its dates' titles, removing it when emptied", async () => {
     const date = (title?: string) => ({ type: "string", format: "date", ...(title && { title }) }) as const;
     const schema = objectOf({ window: objectOf({ start: date("First"), end: date() }) });
     const { latest } = draw(schema, control("window", { endLabel: "Last" }));
@@ -215,7 +218,7 @@ describe("controls", () => {
     expect(screen.getByLabelText("Last")).toBeTruthy();
   });
 
-  it("draw several picks of an enum as checkboxes", async () => {
+  Then("controls draw several picks of an enum as checkboxes", async () => {
     const schema = objectOf({
       light: { type: "array", uniqueItems: true, items: { type: "string", enum: ["sun", "led"] } },
     });
@@ -224,7 +227,7 @@ describe("controls", () => {
     expect((await latest()).data).toEqual({ light: ["sun", "led"] });
   });
 
-  it("draw an array of objects as a table whose cells show their own errors", async () => {
+  Then("controls draw an array of objects as a table whose cells show their own errors", async () => {
     const row = objectOf({
       day: { type: "string", format: "date", title: "Day" },
       grams: { type: "number", minimum: 0, title: "Grams" },
@@ -264,7 +267,7 @@ describe("controls", () => {
     expect((await latest()).data).toEqual({ rows: [] });
   });
 
-  it("order a table's columns by options.columns", async () => {
+  Then("controls order a table's columns by options.columns", async () => {
     const schema = objectOf({
       rows: { type: "array", items: objectOf({ a: { type: "string" }, b: { type: "string" } }) },
     });
@@ -273,7 +276,7 @@ describe("controls", () => {
     expect(headings).toEqual(["b"]);
   });
 
-  it("hide and disable controls by their rules", async () => {
+  Then("controls hide and disable controls by their rules", async () => {
     const date = { type: "string", format: "date" } as const;
     const props: Record<string, JsonSchema> = {
       text: { type: "string" },
@@ -300,12 +303,13 @@ describe("controls", () => {
     expect((screen.getByLabelText("Text") as HTMLInputElement).disabled).toBe(true);
     expect((screen.getByRole("button", { name: "Add row" }) as HTMLButtonElement).disabled).toBe(true);
   });
-});
+}
 
-describe("layouts", () => {
+// layouts
+{
   const schema = objectOf({ a: { type: "string" }, b: { type: "string" }, show: { type: "boolean" } });
 
-  it("lay out vertically, side by side (stacking on a phone) and in groups", async () => {
+  Then("layouts lay out vertically, side by side \\(stacking on a phone\\) and in groups", async () => {
     const ui = {
       type: "VerticalLayout",
       elements: [
@@ -320,7 +324,7 @@ describe("layouts", () => {
     expect(screen.getByText("A note")).toBeTruthy();
   });
 
-  it("hide layouts by their rules", async () => {
+  Then("layouts hide layouts by their rules", async () => {
     const hide = { effect: "HIDE", condition: { scope: "#/properties/show", schema: { const: true } } };
     const ui = {
       type: "VerticalLayout",
@@ -336,7 +340,7 @@ describe("layouts", () => {
     expect(container.textContent).toBe("");
   });
 
-  it("show categories as tabs, leaving out one a rule hides, and nest a categorization", async () => {
+  Then("layouts show categories as tabs, leaving out one a rule hides, and nest a categorization", async () => {
     const ui = {
       type: "Categorization",
       elements: [
@@ -361,10 +365,11 @@ describe("layouts", () => {
     expect(screen.getByRole("tab", { name: "Inner" })).toBeTruthy();
     expect(screen.getByLabelText("B")).toBeTruthy();
   });
-});
+}
 
-describe("the example form", () => {
-  it("draws every renderer and reports its data", async () => {
+// the example form
+{
+  Then("the example form draws every renderer and reports its data", async () => {
     const onChange = vi.fn();
     render(<SchemaForm schema={exampleSchema} uischema={exampleUiSchema} data={exampleData} onChange={onChange} />);
     expect(screen.getByRole("tablist", { name: "Batch" })).toBeTruthy();
@@ -389,4 +394,4 @@ describe("the example form", () => {
     await settle();
     expect(onChange.mock.lastCall?.[0].data).toMatchObject({ organic: true, crop: "basil" });
   });
-});
+}

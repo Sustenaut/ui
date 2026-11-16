@@ -1,12 +1,16 @@
+import { quickpickle } from "quickpickle";
 import { defineConfig } from "vitest/config";
 
-// The unit tests: each component and JSON Forms renderer drawn in jsdom. The LCOV report goes to the CI's
-// sonar job (coverage/lcov.info).
+// The scenarios (tests/features/), Gherkin run by quickpickle on vitest: each component and JSON Forms renderer
+// drawn in jsdom. The LCOV report goes to the CI's sonar job (coverage/lcov.info).
 export default defineConfig({
+  plugins: [quickpickle()],
   test: {
     environment: "jsdom",
-    include: ["tests/**/*.test.tsx"],
-    setupFiles: ["tests/setup.ts"],
+    include: ["tests/features/*.feature"],
+    setupFiles: ["tests/setup.ts", "tests/components.steps.tsx", "tests/jsonforms.steps.tsx"],
+    // quickpickle inlined, so vite resolves its imports (pngjs/browser) as Node does not.
+    server: { deps: { inline: ["quickpickle"] } },
     coverage: {
       provider: "v8",
       include: ["src/**/*.{ts,tsx}"],
