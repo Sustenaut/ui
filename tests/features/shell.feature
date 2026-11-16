@@ -80,3 +80,29 @@ Feature: An app's frame and the dashboard's building blocks
       Then the list is named "Unlock more"
       And the card "Add a second passkey for recovery" says "Unlocks: linking infrastructure" and links to "Add passkey"
       And no card shows a trust level
+
+  Rule: MenuButton, RowActions and AccountChip
+
+    Scenario: A menu button lists its choices as menu items
+      Given a "+ Link account" menu of two kinds of account
+      When the menu is drawn
+      And the person opens the menu
+      Then the menu shows "Cloudflare" with its note "DNS, storage, databases, edge"
+      And choosing "Second DNS provider" tells the page
+
+    Scenario: A row gives its usual action as a named icon and the rest in a menu
+      Given a device row whose usual action is "Forget device"
+      When the row actions are drawn
+      Then there is an icon button named "Forget device"
+      And a menu named "More actions" offers "Rename" and "Sign out"
+
+    Scenario: A row with no safe usual action gives only its word and the menu
+      Given a device row that is this device
+      When the row actions are drawn
+      Then it shows "Signed in" and no icon button but the menu
+
+    Scenario: An account chip shows its name and short id, and its details on focus
+      Given an account chip for GitHub org "kaja-studio"
+      When the chip is drawn
+      Then the chip reads "GitHub" and "kaja-studio" and can take the focus
+      And its details "reader app installed" describe it

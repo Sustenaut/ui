@@ -43,3 +43,5 @@ export { DeviceList } from "./components/DeviceList";
 export type { Device } from "./components/DeviceList";
 export { UnlockList } from "./components/UnlockList";
 export type { Unlock } from "./components/UnlockList";
+export { AccountChip, ActionIcon, MenuButton, RowActions } from "./components/Menus";
+export type { MenuItem } from "./components/Menus";

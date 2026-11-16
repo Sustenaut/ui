@@ -15,10 +15,17 @@ import {
   type Device,
   type StepItem,
   UnlockList,
+  AccountChip,
+  MenuButton,
+  RowActions,
 } from "../src";
 
 // Each scenario builds one element in a Given, draws it in the When and reads it in the Thens.
-type World = { element?: ReactElement; onToggle?: ReturnType<typeof vi.fn<(id: string, open: boolean) => void>> };
+type World = {
+  onSelect?: ReturnType<typeof vi.fn<() => void>>;
+  element?: ReactElement;
+  onToggle?: ReturnType<typeof vi.fn<(id: string, open: boolean) => void>>;
+};
 
 const draw = (world: World) => {
   render(world.element!);
@@ -366,5 +373,98 @@ const draw = (world: World) => {
 
   Then("no card shows a trust level", () => {
     for (const li of screen.getAllByRole("listitem")) expect(li.textContent).not.toMatch(/\b[PO][0-4]\b/);
+  });
+}
+
+// MenuButton, RowActions and AccountChip
+{
+  Given("a {string} menu of two kinds of account", (world: World, trigger: string) => {
+    world.onSelect = vi.fn<() => void>();
+    world.element = (
+      <MenuButton
+        trigger={trigger}
+        variant="primary"
+        items={[
+          { key: "cf", label: "Cloudflare", note: "DNS, storage, databases, edge", href: "/link/cloudflare" },
+          { key: "dns2", label: "Second DNS provider", onSelect: world.onSelect },
+        ]}
+      />
+    );
+  });
+
+  When("the menu is drawn", draw);
+
+  When("the person opens the menu", () => {
+    const summary = screen.getByText("+ Link account");
+    fireEvent.click(summary);
+    (summary.closest("details") as HTMLDetailsElement).open = true;
+  });
+
+  Then("the menu shows {string} with its note {string}", (_w, label: string, note: string) => {
+    const item = screen.getByRole("menuitem", { name: new RegExp(label) });
+    expect(item.getAttribute("href")).toBe("/link/cloudflare");
+    expect(item.textContent).toContain(note);
+  });
+
+  Then("choosing {string} tells the page", (world: World, label: string) => {
+    fireEvent.click(screen.getByRole("menuitem", { name: label }));
+    expect(world.onSelect).toHaveBeenCalledOnce();
+  });
+
+  Given("a device row whose usual action is {string}", (world: World, usual: string) => {
+    world.element = (
+      <RowActions
+        usual={{ label: usual, icon: "trash" }}
+        more={[
+          { key: "rename", label: "Rename" },
+          { key: "out", label: "Sign out" },
+          { key: "forget", label: usual, danger: true },
+        ]}
+      />
+    );
+  });
+
+  Given("a device row that is this device", (world: World) => {
+    world.element = <RowActions note="Signed in" more={[{ key: "out", label: "Sign out" }]} />;
+  });
+
+  When("the row actions are drawn", draw);
+
+  Then("there is an icon button named {string}", (_w, name: string) => {
+    const button = screen.getByRole("button", { name });
+    expect(button.querySelector("svg")).toBeTruthy();
+    expect(button.textContent).toBe("");
+  });
+
+  Then("a menu named {string} offers {string} and {string}", (_w, name: string, a: string, b: string) => {
+    const menu = screen.getByLabelText(name).closest("details")! as HTMLElement;
+    expect(within(menu).getByRole("menuitem", { name: a })).toBeTruthy();
+    expect(within(menu).getByRole("menuitem", { name: b })).toBeTruthy();
+  });
+
+  Then("it shows {string} and no icon button but the menu", (_w, note: string) => {
+    expect(screen.getByText(note)).toBeTruthy();
+    expect(screen.queryByRole("button")).toBeNull();
+    expect(screen.getByLabelText("More actions")).toBeTruthy();
+  });
+
+  Given("an account chip for GitHub org {string}", (world: World, org: string) => {
+    world.element = (
+      <AccountChip id="github" name="GitHub" short={org} detail={`GitHub org ${org} · reader app installed`} />
+    );
+  });
+
+  When("the chip is drawn", draw);
+
+  Then("the chip reads {string} and {string} and can take the focus", (_w, name: string, short: string) => {
+    const chip = screen.getByText(name).parentElement!;
+    expect(chip.textContent).toContain(short);
+    expect(chip.tabIndex).toBe(0);
+  });
+
+  Then("its details {string} describe it", (_w, text: string) => {
+    const chip = screen.getByText("GitHub").parentElement!;
+    expect(screen.getByRole("tooltip", { hidden: true }).id).toBe(chip.getAttribute("aria-describedby"));
+    expect(screen.getByRole("tooltip", { hidden: true }).textContent).toContain(text);
   });
 }

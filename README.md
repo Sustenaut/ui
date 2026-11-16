@@ -64,6 +64,9 @@ https://plan.sustenaut.eu/components, or locally after `make planning` in busine
 | `LaunchTile` | Something to start, e.g. an app: title, line, detail and action; when not `available`, greyed, dashed and saying what it `needs` |
 | `CapabilityMatrix` | Rows of providers by columns of capabilities, each cell yes, no or partly with a footnote mark and a trade-off on hover, numbered notes below |
 | `UnlockList` | "Unlock more": cards of what to do next and what each unlocks, with an action; never a level or score |
+| `MenuButton` | A button that opens a menu of links or buttons under it (`<details>`, no script), e.g. "+ Link account" |
+| `RowActions` | A row's usual action as a named icon (bin, flag) plus a three-dot menu for the rest; or only a word and the menu |
+| `AccountChip` | A linked account as a chip: name and short id, full details on hover and focus |
 | `DeviceList` | The devices someone signed in from: name and tag, country, last seen and an action |
 | `Form`, `TextField`, `ChoiceField` | Bindings for [react-hook-form](https://react-hook-form.com/): a form, a text input or area, and a `ChoiceGroup` wired to its fields, showing their errors |
 
@@ -80,7 +83,8 @@ are props with English defaults, which the page translates:
 - `SideNav`'s and `StepList`'s `label`;
 - `CapabilityMatrix`'s `text` and `rowHeader`;
 - `DeviceList`'s `headers`;
-- `UnlockList`'s `label` and `text`.
+- `UnlockList`'s `label` and `text`;
+- `MenuButton`'s and `RowActions`' `label` and `moreLabel`.
 
 `LocaleMenu` is the language switcher. It takes the languages (code, own
 name, flag image) and reports a choice; the app does the switching
