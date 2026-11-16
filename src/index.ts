@@ -31,3 +31,15 @@ export { DataTable, Disclosure, LinkList, PageHeading, TagLink } from "./compone
 export type { Column, LinkItem } from "./components/Content";
 export { LocaleMenu } from "./components/LocaleMenu";
 export type { LocaleOption } from "./components/LocaleMenu";
+// An app's frame and the dashboard's building blocks.
+export { AppShell, SideNav } from "./components/Shell";
+export type { NavItem, NavSection } from "./components/Shell";
+export { StepList } from "./components/StepList";
+export type { StepItem } from "./components/StepList";
+export { LaunchTile } from "./components/LaunchTile";
+export { CapabilityMatrix } from "./components/CapabilityMatrix";
+export type { CapabilityCell, CapabilityRow } from "./components/CapabilityMatrix";
+export { DeviceList } from "./components/DeviceList";
+export type { Device } from "./components/DeviceList";
+export { UnlockList } from "./components/UnlockList";
+export type { Unlock } from "./components/UnlockList";
