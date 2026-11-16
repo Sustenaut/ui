@@ -8,7 +8,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     include: ["tests/features/*.feature"],
-    setupFiles: ["tests/setup.ts", "tests/components.steps.tsx", "tests/jsonforms.steps.tsx"],
+    setupFiles: ["tests/setup.ts", "tests/components.steps.tsx", "tests/jsonforms.steps.tsx", "tests/shell.steps.tsx"],
     // quickpickle inlined, so vite resolves its imports (pngjs/browser) as Node does not.
     server: { deps: { inline: ["quickpickle"] } },
     coverage: {

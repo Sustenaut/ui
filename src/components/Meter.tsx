@@ -26,7 +26,7 @@ export function Meter({
 }) {
   const after = used + adding;
   const over = total > 0 ? after > total : after > 0;
-  const scale = Math.max(total, after, 1);
+  const scale = Math.max(total, after) || 1;
   const pct = (n: number) => `${(100 * n) / scale}%`;
   const fmt = format ?? ((n: number) => `${Number.isInteger(n) ? n : n.toFixed(1)}${unit ? ` ${unit}` : ""}`);
   return (
