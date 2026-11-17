@@ -9,7 +9,7 @@
 #     2. the release app's secrets, RELEASE_APP_ID and RELEASE_APP_KEY, reach ui
 #   scripts/go-live-pubrel.sh after-merge   once it has, on main (git latest):
 #     3. main's ruleset requires release / release, and the tag ruleset lets only
-#        the release app tag (./pubkit protect)
+#        the release app tag (./pubrules protect)
 #
 # Each step says what it does and asks first; a step already done is skipped, and
 # the first error stops it. It prints no secret.
@@ -71,9 +71,9 @@ git fetch -q origin main
 echo "   ok: $(git rev-parse --short HEAD)"
 
 step "3/3 the rulesets: release / release required, tags from the release app only"
-./pubkit protect --check || true
-ask "Apply them with ./pubkit protect?"
-./pubkit protect
+./pubrules protect --check || true
+ask "Apply them with ./pubrules protect?"
+./pubrules protect
 cat <<'DONE'
 
 == Done. The next pull request that records changes (pubrel add) can be released:
