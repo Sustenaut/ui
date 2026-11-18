@@ -1,7 +1,10 @@
-// quickpickle's setup for the scenarios: each draws into a fresh document.
+// quickpickle's setup for the scenarios: pubtest's steps (GRAMMAR.md), and each scenario draws into a fresh document.
+import { register } from "@sustenaut/pubtest";
 import { cleanup } from "@testing-library/react";
-import { After } from "quickpickle";
+import * as quickpickle from "quickpickle";
 
-After(async () => {
+register(quickpickle, { runner: "quickpickle" });
+
+quickpickle.After(async () => {
   cleanup();
 });
