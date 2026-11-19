@@ -1,4 +1,0 @@
-{
-  "category": "added",
-  "change": "Live run components for the convergence engine's run page: ModeSwitch, NeedRow (with NeedTable, StateBadge and StopLabel), MachineStrip, Journal, ConfirmByName and RunHeader"
-}
