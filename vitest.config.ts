@@ -14,6 +14,7 @@ export default defineConfig({
       "tests/components.steps.tsx",
       "tests/jsonforms.steps.tsx",
       "tests/shell.steps.tsx",
+      "tests/liverun.steps.tsx",
     ],
     // quickpickle inlined, so vite resolves its imports (pngjs/browser) as Node does not.
     server: { deps: { inline: ["quickpickle"] } },
