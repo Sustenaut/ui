@@ -68,6 +68,13 @@ https://plan.sustenaut.eu/components, or locally after `make planning` in busine
 | `RowActions` | A row's usual action as a named icon (bin, flag) plus a three-dot menu for the rest; or only a word and the menu |
 | `AccountChip` | A linked account as a chip: name and short id, full details on hover and focus |
 | `DeviceList` | The devices someone signed in from: name and tag, country, last seen and an action |
+| `RunHeader` | A live run's header: the repository as its title, unit and mode, its state as a badge, its links (the GitHub run) and facts, an explanatory line, and one primary and one secondary action (Approve, Stop) |
+| `NeedTable`, `NeedRow` | A run's needs as a table, one row each: name and type, grade, what it should do (a `ModeSwitch` slot), its machine (a `MachineStrip` slot), its state badge with the time in it, its last result and its stop class (`continue` in the warn colour) |
+| `ModeSwitch` | Check or Fulfil for one need, a pair of radio buttons whose legend names the need; `disabled` once the run's choices are frozen; a need of grade human gets none, as the page decides |
+| `MachineStrip` | One need's state machine as a row of its states, the current one filled |
+| `Journal` | A run's journal, newest last, in monospace: time · need · from → to · actor |
+| `ConfirmByName` | "Cancel anyway" for a need that must finish: a warning and a field; the button stays disabled until the need's name is typed, and Enter submits nothing |
+| `StateBadge`, `StopLabel` | A need's state, and how a Stop treats it, as labels |
 | `Form`, `TextField`, `ChoiceField` | Bindings for [react-hook-form](https://react-hook-form.com/): a form, a text input or area, and a `ChoiceGroup` wired to its fields, showing their errors |
 
 ## Text and languages
@@ -84,7 +91,8 @@ are props with English defaults, which the page translates:
 - `CapabilityMatrix`'s `text` and `rowHeader`;
 - `DeviceList`'s `headers`;
 - `UnlockList`'s `label` and `text`;
-- `MenuButton`'s and `RowActions`' `label` and `moreLabel`.
+- `MenuButton`'s and `RowActions`' `label` and `moreLabel`;
+- `ModeSwitch`'s `labels` and `legend`, `NeedRow`'s `stateLabel` and `stopLabel`, `StateBadge`'s and `StopLabel`'s `label`, `MachineStrip`'s `label`, `Journal`'s `title`, `ConfirmByName`'s `summary`, `prompt` and `action`, and `RunHeader`'s `unitLabel`.
 
 `LocaleMenu` is the language switcher. It takes the languages (code, own
 name, flag image) and reports a choice; the app does the switching
